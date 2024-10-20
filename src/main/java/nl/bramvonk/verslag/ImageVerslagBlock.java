@@ -25,7 +25,7 @@ public class ImageVerslagBlock implements VerslagBlock {
         }
         ret += "/ >";
         if (caption != null) {
-            ret += "<br>\n<em>%s</em>".formatted(StringEscapeUtils.escapeHtml4(caption));
+            ret += "<br><em>%s</em>".formatted(StringEscapeUtils.escapeHtml4(caption));
         }
         return "<p style='text-align: center;'>%s</p>".formatted(ret);
     }
