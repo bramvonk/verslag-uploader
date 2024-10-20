@@ -43,20 +43,19 @@ public class GoogleDocumentReader {
 
         Document document = service.documents().get(documentId).execute();
 
-        GoogleDoc googleDoc = new GoogleDoc(document.getTitle());
+
 
         imagesByInlineKey = document.getInlineObjects().entrySet().stream().filter(this::isImage).collect(Collectors.toMap(
                 Map.Entry::getKey,
                 this::getImageUri
         ));
 
-        googleDoc.elements.addAll(
-                document.getBody().getContent().stream()
-                        .flatMap(content -> convertBodyElementToGoogleDocElements(content).stream())
-                        .filter(Objects::nonNull)
-                        .toList()
-        );
-        return googleDoc;
+        List<GoogleDocElement> elements = document.getBody().getContent().stream()
+                .flatMap(content -> convertBodyElementToGoogleDocElements(content).stream())
+                .filter(Objects::nonNull)
+                .toList();
+
+        return new GoogleDoc(document.getTitle(), elements);
     }
 
     private List<GoogleDocElement> convertBodyElementToGoogleDocElements(StructuralElement content) {

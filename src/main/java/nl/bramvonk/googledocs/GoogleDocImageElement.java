@@ -1,10 +1,12 @@
 package nl.bramvonk.googledocs;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.net.URI;
 
 @RequiredArgsConstructor
+@Getter
 public class GoogleDocImageElement implements GoogleDocElement {
-    public final URI url;
+    private final URI url;
 }

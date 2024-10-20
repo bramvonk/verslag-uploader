@@ -1,12 +1,13 @@
 package nl.bramvonk.googledocs;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Getter
 public class GoogleDoc {
-    public final String title;
-    public List<GoogleDocElement> elements = new ArrayList<>();
+    private final String title;
+    private final List<GoogleDocElement> elements;
 }

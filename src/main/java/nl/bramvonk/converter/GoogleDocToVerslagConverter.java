@@ -28,7 +28,7 @@ public class GoogleDocToVerslagConverter {
     }
 
     private void convert() {
-        verslag.setTitle(googleDoc.title);
+        verslag.setTitle(googleDoc.getTitle());
 
         List<GoogleDocElement> bodyElements = readMetaDataAndReturnRestOfTheDocument(googleDoc);
 
@@ -49,7 +49,7 @@ public class GoogleDocToVerslagConverter {
     private void processText(GoogleDocTextElement textElement, List<GoogleDocElement> bodyElements) {
         List<GoogleDocTextElement> blockElements = new ArrayList<>();
         blockElements.add(textElement);
-        String text = textElement.text;
+        String text = textElement.getText();
         while (!text.endsWith("\n") && !bodyElements.isEmpty() && bodyElements.getFirst() instanceof GoogleDocTextElement nextTextElement) {
             blockElements.add(nextTextElement);
             bodyElements.removeFirst();
@@ -61,10 +61,10 @@ public class GoogleDocToVerslagConverter {
         String caption = null;
         // after an image often is directly a new line
         ifFirstElementIsANewlineRemoveIt(restOfTheBody);
-        if (!restOfTheBody.isEmpty() && restOfTheBody.getFirst() instanceof GoogleDocTextElement textElement && !textElement.text.equals("\n") && textElement.isItalic) {
+        if (!restOfTheBody.isEmpty() && restOfTheBody.getFirst() instanceof GoogleDocTextElement textElement && !textElement.getText().equals("\n") && textElement.isItalic()) {
             // caption
             restOfTheBody.removeFirst();
-            String text = textElement.text;
+            String text = textElement.getText();
             if (!text.endsWith("\n")) {
                 throw new IllegalStateException("After an image, an italic text is an image caption. Add a newline after it. And please don't add any other text styling to that. Text found: '%s'".formatted(text));
             }
@@ -77,7 +77,7 @@ public class GoogleDocToVerslagConverter {
         } else {
             fileNameBase = verslag.getTitle();
         }
-        ImageVerslagBlock imageVerslagBlock = new ImageVerslagBlock(toImageFileName(String.format("%03d", ++nrOfImages) + "-" + fileNameBase), caption, imageElement.url);
+        ImageVerslagBlock imageVerslagBlock = new ImageVerslagBlock(toImageFileName(String.format("%03d", ++nrOfImages) + "-" + fileNameBase), caption, imageElement.getUrl());
         verslag.getBlocks().add(imageVerslagBlock);
     }
 
@@ -88,20 +88,20 @@ public class GoogleDocToVerslagConverter {
     }
 
     private boolean firstElementIsANewline(List<GoogleDocElement> restOfTheBody) {
-        return !restOfTheBody.isEmpty() && restOfTheBody.getFirst() instanceof GoogleDocTextElement textElement && textElement.text.equals("\n");
+        return !restOfTheBody.isEmpty() && restOfTheBody.getFirst() instanceof GoogleDocTextElement textElement && textElement.getText().equals("\n");
     }
 
     private List<GoogleDocElement> readMetaDataAndReturnRestOfTheDocument(GoogleDoc googleDoc) {
-        for (int i = 0; i < googleDoc.elements.size(); i++) {
-            GoogleDocElement element = googleDoc.elements.get(i);
+        for (int i = 0; i < googleDoc.getElements().size(); i++) {
+            GoogleDocElement element = googleDoc.getElements().get(i);
 
             if (element instanceof GoogleDocTextElement textElement) {
-                String text = textElement.text;
+                String text = textElement.getText();
                 if (text.equals("\n")) {
                     if (verslag.getMainMenu() == null || verslag.getPhotoSubDirectory() == null) {
                         throw new IllegalStateException("First write meta data: hoofdmenu, datum/jaar or locatie is missing");
                     }
-                    return googleDoc.elements.stream().skip(i + 1).collect(Collectors.toCollection(ArrayList::new));
+                    return googleDoc.getElements().stream().skip(i + 1).collect(Collectors.toCollection(ArrayList::new));
                 }
                 String[] metaData = text.replaceFirst(": ", ":").split(":", 2);
                 if (metaData.length == 1) {

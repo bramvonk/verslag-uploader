@@ -1,10 +1,12 @@
 package nl.bramvonk.googledocs;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Getter
 public class GoogleDocTextElement implements GoogleDocElement {
-    public final String text;
-    public final boolean isBold;
-    public final boolean isItalic;
+    private final String text;
+    private final boolean bold;
+    private final boolean italic;
 }

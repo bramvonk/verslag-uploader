@@ -16,7 +16,7 @@ public class VerslagUploaderApplication {
         log("Processing %s", googleDocsDocUri.toString());
         log("Downloading document");
         GoogleDoc googleDoc = new GoogleDocumentReader().readFrom(googleDocsDocUri);
-        log("Converting %s to verslag", googleDoc.title);
+        log("Converting %s to verslag", googleDoc.getTitle());
         Verslag verslag = GoogleDocToVerslagConverter.convert(googleDoc);
         log("Downloading and resizing photos");
         PhotoDownloaderAndResizer.process(verslag);
@@ -34,8 +34,7 @@ public class VerslagUploaderApplication {
     }
 
     private static GoogleDoc mockDoc() {
-        GoogleDoc googleDoc = new GoogleDoc("Amsterdam Open");
-        googleDoc.elements.addAll(List.of(
+        return new GoogleDoc("Amsterdam Open", List.of(
                 createTextElement("Hoofdmenu: kanopolo\n"),
                 createTextElement("Fotosubdirectory: amsterdamopen_2024\n"),
                 createTextElement("Metabeschrijving: hier metabeschrijving\n"),
@@ -45,7 +44,6 @@ public class VerslagUploaderApplication {
                 new GoogleDocImageElement(URI.create("http://192.168.0.20/testphoto.jpg")),
                 new GoogleDocTextElement("Onderschrift foto\n", false, true)
         ));
-        return googleDoc;
     }
 
     private static GoogleDocElement createTextElement(String s) {
