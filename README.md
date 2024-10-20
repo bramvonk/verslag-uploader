@@ -3,6 +3,7 @@
 ## Google setup
 
 On google cloud console:
+
 - make a project
 - then a service account credential in that
 - and in that create a json key
@@ -13,10 +14,12 @@ On google cloud console:
 |----------------------|-----------------------------------------------------------------------------------------------------------|
 | GOOGLE_API_KEY       | The json service account credential key you created above. Used to read google docs.                      |
 | USERNAME<br>PASSWORD | Username/password to log in to verslag website. Must have rights to make new verslagen and upload photos. |
+| BASE_URL             | Base url of the verslag site without / after hostname. E.g. https://example.com                           |
 
 ## Usage
 
 ### Make a document
+
 Make a google docs document. In the document, you first need to write some meta data:
 
 | name                  | required? | description                                                                                                                                                                                   |
@@ -39,4 +42,5 @@ Make sure the document is 'shared' with at least 'Anyone on the internet with th
 
 Run VerslagUploaderApplication with the url of the google docs as argument.
 
-Halfway the process you will need to select the 'main' photo of the verslag. You will need to zoom out to see the blue button to click. Then continue with the 'play' symbol on the extra window.
+Halfway the process you will need to select the 'main' photo of the verslag. You will need to zoom out to see the blue
+button to click. Then continue with the 'play' symbol on the extra window.
