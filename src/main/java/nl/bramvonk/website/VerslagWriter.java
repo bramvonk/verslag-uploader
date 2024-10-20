@@ -8,7 +8,6 @@ import nl.bramvonk.verslag.ImageVerslagBlock;
 import nl.bramvonk.verslag.Verslag;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +29,7 @@ public class VerslagWriter {
         try (Playwright playwright = Playwright.create()) {
             try (Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false))) {
                 try (BrowserContext context = browser.newContext(new Browser.NewContextOptions()
-                        .setRecordVideoDir(Paths.get("D:\\"))
+                        //.setRecordVideoDir(Paths.get(TODO))
                         //.setRecordVideoSize(640, 480)
                 )) {
                     page = context.newPage();
