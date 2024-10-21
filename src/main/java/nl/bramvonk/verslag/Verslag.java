@@ -16,6 +16,7 @@ public class Verslag {
     private String photoSubDirectory;
     private String metadataDescription;
     private String photoFileBaseName;
+    private String existingVerslagPath;
 
     private List<VerslagBlock> blocks = new ArrayList<>();
 
@@ -33,4 +34,5 @@ public class Verslag {
                 .map(it -> (ImageVerslagBlock) it)
                 .toList();
     }
+
 }

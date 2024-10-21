@@ -125,6 +125,12 @@ public class GoogleDocToVerslagConverter {
                     case "fotobestandsnaambasis":
                         verslag.setPhotoFileBaseName(value);
                         break;
+                    case "bestaandverslagpad":
+                        if (!value.startsWith("/verslagen")) {
+                            throw new IllegalArgumentException("Bestaandverslagpad should be used with a path such as /verslagen-wildwater/belgie/rivier_123");
+                        }
+                        verslag.setExistingVerslagPath(value);
+                        break;
                     default:
                         throw new IllegalArgumentException("Unknown meta data key: " + metaData[0]);
                 }

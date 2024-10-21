@@ -37,19 +37,30 @@ public class VerslagWriter {
 
                     login();
 
-                    goToVerslagenPage();
+                    boolean newVerslag = verslag.getExistingVerslagPath() == null;
+                    if (newVerslag) {
+                        goToVerslagenPage();
 
-                    makeNewArticle();
+                        makeNewArticle();
+                    } else {
+                        openExistingVerslagEditor();
+
+                        page.pause();
+                    }
 
                     uploadImages();
 
                     fillContentTab();
 
-                    fillPublicationTab();
+                    if (newVerslag) {
+                        fillPublicationTab();
+                    }
 
                     fillMetadataTab();
 
-                    letUserChooseMainImage();
+                    if (newVerslag) {
+                        letUserChooseMainImage();
+                    }
 
                     goBackToContentsTab();
 
@@ -61,6 +72,11 @@ public class VerslagWriter {
                 }
             }
         }
+    }
+
+    private void openExistingVerslagEditor() {
+        page.navigate(baseUrl + verslag.getExistingVerslagPath());
+        page.locator("span.icon-edit").click();
     }
 
     private void letUserChooseMainImage() {
@@ -146,6 +162,8 @@ public class VerslagWriter {
         FrameLocator editorFrameLocator = page.mainFrame().frameLocator("iframe#jform_articletext_editor_source_iframe");
         // due to the strange way the editor is made, it is necessary to click the editor first, otherwise it will fill the field your cursor is in
         editorFrameLocator.locator("div.cm-activeLine.cm-line").click();
+        // for updating, select all first
+        page.keyboard().press("Control+A");
         editorFrameLocator.locator("div.cm-activeLine.cm-line").fill(verslag.generateHtml());
 
         // go back to WYSIWYG editor
